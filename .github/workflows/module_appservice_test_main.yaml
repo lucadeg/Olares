@@ -1,19 +1,8 @@
+
 name: App-Service Unit Tests
 on:
-  push:
-    branches:
-      - "main"
-    paths:
-      - 'framework/app-service/**'
-      - '!framework/app-service/README.md'
-      - '!framework/app-service/PROJECT'
-  pull_request:
-    branches:
-      - "main"
-    paths:
-      - 'framework/app-service/**'
-      - '!framework/app-service/README.md'
-      - '!framework/app-service/PROJECT'
+  workflow_dispatch:
+  # Automatic triggers removed; invoke through FounderOS/Admin Gate.
 jobs:
   test-unit:
     runs-on: ubuntu-latest

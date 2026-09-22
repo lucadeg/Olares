@@ -1,19 +1,9 @@
+
 name: L4-BFL-Proxy Build test
 
 on:
-  push:
-    branches: [ "module-l4" ]
-    paths:
-      - 'framework/l4-bfl-proxy/**'
-      - '!framework/l4-bfl-proxy/.olares/**'
-      - '!framework/l4-bfl-proxy/README.md'
-  pull_request:
-    branches: [ "module-l4" ]
-    paths:
-      - 'framework/l4-bfl-proxy/**'
-      - '!framework/l4-bfl-proxy/.olares/**'
-      - '!framework/l4-bfl-proxy/README.md'
-
+  workflow_dispatch:
+  # Automatic triggers removed; invoke through FounderOS/Admin Gate.
 jobs:
   build:
     runs-on: ubuntu-latest

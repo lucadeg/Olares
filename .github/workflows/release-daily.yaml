@@ -1,13 +1,12 @@
 
 
+
 name: Daily Build Release
 
 on:
-  schedule:
-    # This is a UTC time
-    - cron: "30 18 * * *"
   workflow_dispatch:
 
+  # Automatic triggers removed; invoke through FounderOS/Admin Gate.
 jobs:
 
   daily-version:

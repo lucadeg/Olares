@@ -1,21 +1,8 @@
+
 name: App-Service Build test
-on: 
-  push:
-    branches:
-      - "module-appservice"
-    paths:
-      - 'framework/app-service/**'
-      - '!framework/app-service/.olares/**'
-      - '!framework/app-service/README.md'
-      - '!framework/app-service/PROJECT'
-  pull_request:
-    branches:
-      - "module-appservice"
-    paths:
-      - 'framework/app-service/**'
-      - '!framework/app-service/.olares/**'
-      - '!framework/app-service/README.md'
-      - '!framework/app-service/PROJECT'
+on:
+  workflow_dispatch:
+  # Automatic triggers removed; invoke through FounderOS/Admin Gate.
 jobs:
   build0-main:
     runs-on: ubuntu-latest

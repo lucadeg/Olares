@@ -1,19 +1,8 @@
+
 name: TAPR Build test
 on:
-  push:
-    branches:
-      - "module-tapr"
-    paths:
-      - 'platform/tapr/**'
-      - '!platform/tapr/.olares/**'
-      - '!platform/tapr/README.md'
-  pull_request:
-    branches:
-      - "module-tapr"
-    paths:
-      - 'platform/tapr/**'
-      - '!platform/tapr/.olares/**'
-      - '!platform/tapr/README.md'
+  workflow_dispatch:
+  # Automatic triggers removed; invoke through FounderOS/Admin Gate.
 jobs:
   build0-main:
     runs-on: ubuntu-latest

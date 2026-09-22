@@ -1,21 +1,9 @@
+
 name: Kubesphere Build Test
 
 on:
-  push:
-    branches:
-      - "module-kubesphere"
-    paths:
-      - 'infrastructure/kubesphere/**'
-      - '!infrastructure/kubesphere/.olares/**'
-      - '!infrastructure/kubesphere/README.md'
-  pull_request:
-    branches:
-      - "module-kubesphere"
-    paths:
-      - 'infrastructure/kubesphere/**'
-      - '!infrastructure/kubesphere/.olares/**'
-      - '!infrastructure/kubesphere/README.md'
-
+  workflow_dispatch:
+  # Automatic triggers removed; invoke through FounderOS/Admin Gate.
 jobs:
   build:
     runs-on: ubuntu-latest

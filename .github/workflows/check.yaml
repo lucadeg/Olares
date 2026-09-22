@@ -1,34 +1,11 @@
+
 name: Lint and Test Charts
 
 on:
-  push:
-    branches: [ "main", "release-*" ]
-    paths:
-      - '!docs/**'    
-      - 'apps/.olares/**'
-      - 'build/**'
-      - 'cli/**'
-      - 'daemon/**'
-      - 'framework/**/.olares/**'
-      - 'infrastructure/**/.olares/**'
-      - 'platform/**/.olares/**'
-      - 'vendor/**'
-  pull_request:
-    branches: [ "main", "release-*" ]
-    paths:
-      - '!docs/**'    
-      - 'apps/.olares/**'
-      - 'build/**'
-      - 'cli/**'
-      - 'daemon/**'
-      - 'framework/**/.olares/**'
-      - 'infrastructure/**/.olares/**'
-      - 'platform/**/.olares/**'
-      - 'vendor/**'
-
   workflow_dispatch:
 
 
+  # Automatic triggers removed; invoke through FounderOS/Admin Gate.
 jobs:
   check-permission:
     runs-on: ubuntu-latest

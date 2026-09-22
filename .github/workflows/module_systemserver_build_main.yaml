@@ -1,19 +1,7 @@
 name: SystemServer Build test
-on: 
-  push:
-    branches:
-      - "module-systemserver"
-    paths:
-      - 'framework/systemserver/**'
-      - '!framework/systemserver/.olares/**'
-      - '!framework/systemserver/README.md'
-  pull_request:
-    branches:
-      - "module-systemserver"
-    paths:
-      - 'framework/systemserver/**'
-      - '!framework/systemserver/.olares/**'
-      - '!framework/systemserver/README.md'
+on:
+  workflow_dispatch:
+  # Automatic triggers removed; invoke through FounderOS/Admin Gate.
 jobs:
   build0-main:
     runs-on: ubuntu-latest

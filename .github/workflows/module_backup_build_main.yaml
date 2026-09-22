@@ -1,21 +1,9 @@
+
 name: Backup Server Build test
 
 on:
-  push:
-    branches: 
-      - "module-backup"
-    paths:
-      - 'framework/backup-server/**'
-      - '!framework/backup-server/.olares/**'
-      - '!framework/backup-server/README.md'
-  pull_request:
-    branches: 
-      - "module-backup"
-    paths:
-      - 'framework/backup-server/**'
-      - '!framework/backup-server/.olares/**'
-      - '!framework/backup-server/README.md'
-
+  workflow_dispatch:
+  # Automatic triggers removed; invoke through FounderOS/Admin Gate.
 jobs:
   build:
     runs-on: ubuntu-latest
