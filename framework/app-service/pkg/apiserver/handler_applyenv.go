@@ -47,6 +47,10 @@ func (h *Handler) appApplyEnv(req *restful.Request, resp *restful.Response) {
 		return
 	}
 	appCopy.Annotations[api.AppTokenKey] = token
+	// Snapshot the pre-op state so applying_env_app can decide whether to
+	// scale workloads back up or land in Stopped. Only Running/Stopped
+	// overwrite; retries from failed states keep the prior steady intent.
+	api.SnapshotPreUpgradeState(appCopy.Annotations, appMgr.Status.State)
 
 	err = h.ctrlClient.Patch(req.Request.Context(), appCopy, client.MergeFrom(&appMgr))
 	if err != nil {
@@ -61,6 +65,7 @@ func (h *Handler) appApplyEnv(req *restful.Request, resp *restful.Response) {
 		OpID:       opID,
 		State:      appv1alpha1.ApplyingEnv,
 		Message:    "waiting for applying env",
+		Reason:     appv1alpha1.ApplyingEnv.String(),
 		StatusTime: &now,
 		UpdateTime: &now,
 	}

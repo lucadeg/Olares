@@ -1,3 +1,11 @@
+---
+description: Get familiar with Olares Desktop, including the Dock, Launchpad, application windows, widgets, and global search.
+head:
+  - - meta
+    - name: keywords
+      content: Olares, Desktop, Dock, Launchpad, widgets, global search, appearance
+---
+
 # Get familiar with Desktop
 
 Desktop is the primary interface for interacting with Olares. From here, you can open and manage built-in system apps as well as the apps you install.
@@ -31,6 +39,10 @@ Some applications only support opening in a browser tab.
 
 - **Search**: Quickly launch applications and find supported content across Olares.
 - **Notifications**: Click the notification icon to view system and application notifications.
+
+### Widgets
+
+Desktop can display optional widgets in the lower-right corner for quick information such as time, date, and system performance. To show, hide, or customize widgets, see [Set language and appearance](settings/language-appearance.md#widgets).
 
 ## Use Launchpad
 

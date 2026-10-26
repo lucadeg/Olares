@@ -186,6 +186,7 @@ spec:
         app: multus
         name: multus
     spec:
+      priorityClassName: system-cluster-critical
       hostNetwork: true
       tolerations:
       - operator: Exists
@@ -207,7 +208,7 @@ spec:
             memory: "50Mi"
           limits:
             cpu: "100m"
-            memory: "50Mi"
+            memory: "256Mi"
         securityContext:
           privileged: true
         terminationMessagePolicy: FallbackToLogsOnError
@@ -265,11 +266,12 @@ spec:
       "cniVersion": "0.3.1",
       "name": "underlay",
       "type": "macvlan",
-      "master": "br-olares",
+      "master": "olares-lan",
       "mode": "bridge",
       "ipam": {
         "type": "dhcp",
         "omitDefaultGateway": true,
+        "sendRelease": false,
         "request": [
           { "skipDefault": true, "option": "subnet-mask" }
         ]

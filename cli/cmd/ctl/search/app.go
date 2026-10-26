@@ -11,21 +11,22 @@ import (
 
 	"github.com/spf13/cobra"
 
+	"github.com/beclab/Olares/cli/pkg/bflenvelope"
 	"github.com/beclab/Olares/cli/pkg/cmdutil"
 	"github.com/beclab/Olares/cli/pkg/whoami"
 )
 
 var uninstalledAppStates = map[string]struct{}{
-	"pendingCanceled":      {},
-	"downloadingCanceled":  {},
-	"downloadFailed":       {},
-	"installingCanceled":   {},
-	"installFailed":        {},
-	"uninstalled":          {},
+	"pendingCanceled":     {},
+	"downloadingCanceled": {},
+	"downloadFailed":      {},
+	"installingCanceled":  {},
+	"installFailed":       {},
+	"uninstalled":         {},
 }
 
 type appOptions struct {
-	pagingOptions
+	output string
 }
 
 type appEntrance struct {
@@ -71,8 +72,7 @@ entrance title (case-insensitive substring match).
 
 Examples:
   olares-cli search app wise
-  olares-cli search app drive --limit 10
-  olares-cli search app notes -o json
+  olares-cli search app firefox -o json
 `,
 		Args: cobra.MinimumNArgs(1),
 		RunE: func(c *cobra.Command, args []string) error {
@@ -84,7 +84,7 @@ Examples:
 		},
 	}
 	cmd.SilenceUsage = true
-	registerPagingFlags(cmd, &o.pagingOptions)
+	cmd.Flags().StringVarP(&o.output, "output", "o", "table", "output format: table, json")
 	return cmd
 }
 
@@ -92,7 +92,7 @@ func runAppSearch(ctx context.Context, f *cmdutil.Factory, keyword string, o *ap
 	if ctx == nil {
 		ctx = context.Background()
 	}
-	format, err := o.validate()
+	format, err := parseFormat(o.output)
 	if err != nil {
 		return err
 	}
@@ -107,8 +107,7 @@ func runAppSearch(ctx context.Context, f *cmdutil.Factory, keyword string, o *ap
 		return err
 	}
 
-	matched := filterAppsByKeyword(apps, keyword)
-	items := paginateAppItems(matched, o.offset, o.limit)
+	items := filterAppsByKeyword(apps, keyword)
 
 	switch format {
 	case FormatJSON:
@@ -145,25 +144,13 @@ func decodeMyAppsResponse(method, path string, raw json.RawMessage) ([]appRaw, e
 		return apps, nil
 	}
 
-	var env bflEnvelope
+	var env bflenvelope.Envelope
 	if err := json.Unmarshal(trimmed, &env); err != nil {
 		return nil, fmt.Errorf("%s %s: decode response: %w", method, path, err)
 	}
-	switch env.Code {
-	case 0, 200:
-	default:
-		msg := strings.TrimSpace(env.Message)
-		if msg == "" {
-			return nil, fmt.Errorf("%s %s: upstream returned code %d", method, path, env.Code)
-		}
-		return nil, fmt.Errorf("%s %s: upstream returned code %d: %s", method, path, env.Code, msg)
-	}
-	if len(env.Data) == 0 {
-		return nil, nil
-	}
 	var apps []appRaw
-	if err := json.Unmarshal(env.Data, &apps); err != nil {
-		return nil, fmt.Errorf("%s %s: decode data: %w", method, path, err)
+	if err := bflenvelope.Data(method, path, env, &apps); err != nil {
+		return nil, err
 	}
 	return apps, nil
 }
@@ -213,17 +200,6 @@ func filterAppsByKeyword(apps []appRaw, keyword string) []appItem {
 		}
 	}
 	return items
-}
-
-func paginateAppItems(items []appItem, offset, limit int) []appItem {
-	if offset >= len(items) {
-		return nil
-	}
-	end := offset + limit
-	if end > len(items) {
-		end = len(items)
-	}
-	return items[offset:end]
 }
 
 func printAppResultsJSON(w io.Writer, items []appItem) error {
